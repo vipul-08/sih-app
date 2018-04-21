@@ -1,7 +1,6 @@
 package sih.com.sih.Adapters;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -10,8 +9,10 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import java.util.List;
+
 import sih.com.sih.Modals.Stage;
 import sih.com.sih.R;
+
 import static android.graphics.Color.GREEN;
 import static android.graphics.Color.RED;
 
@@ -36,6 +37,10 @@ public class ProgressAdapter extends RecyclerView.Adapter<ProgressAdapter.Progre
     @Override
     public void onBindViewHolder(@NonNull ProgressViewHolder holder, int position) {
         Stage stage = list.get(position);
+        if(position==(list.size()-1))
+        {
+        	holder.sep.setVisibility(View.INVISIBLE);
+        }
         if(stage.isStatus()) {
             holder.stage_element.setBackgroundColor(GREEN);
             holder.textView.setText("Item Reached!!");
@@ -53,13 +58,14 @@ public class ProgressAdapter extends RecyclerView.Adapter<ProgressAdapter.Progre
 
     class ProgressViewHolder extends RecyclerView.ViewHolder {
 
-        View stage_element;
+        View stage_element,sep;
         TextView textView;
 
         public ProgressViewHolder(View itemView) {
             super(itemView);
             stage_element = itemView.findViewById(R.id.stage_element);
             textView = itemView.findViewById(R.id.statusText);
+            sep = itemView.findViewById(R.id.separator);
         }
     }
 
