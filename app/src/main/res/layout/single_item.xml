@@ -6,20 +6,19 @@
  android:layout_width = "match_parent"
  android:layout_height = "wrap_content">
 
-    <View
+    <ImageView
      android:id = "@+id/stage_element"
-     android:layout_width = "24dp"
-     android:layout_height = "24dp"
-     android:background = "@color/colorAccent" />
-    
+     android:layout_width = "30dp"
+     android:layout_height = "30dp" />
+	
     <View
      android:layout_width = "2dp"
      android:layout_height = "32dp"
      android:layout_below = "@id/stage_element"
-     android:layout_marginEnd = "10dp"
-     android:layout_marginLeft = "10dp"
-     android:layout_marginRight = "10dp"
-     android:layout_marginStart = "10dp"
+     android:layout_marginEnd = "14dp"
+     android:layout_marginLeft = "14dp"
+     android:layout_marginRight = "14dp"
+     android:layout_marginStart = "14dp"
      android:id="@+id/separator"
      android:background = "@android:color/black" />
 
