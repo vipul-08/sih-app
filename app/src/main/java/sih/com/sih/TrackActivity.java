@@ -4,11 +4,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -26,6 +28,7 @@ public class TrackActivity extends AppCompatActivity {
 
     RecyclerView recyclerView;
     List<Stage> list;
+    String genTicket;
     ProgressAdapter adapter;
     DatabaseReference ref;
     Spinner spinner;
@@ -34,13 +37,42 @@ public class TrackActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_track);
 
+        String email = getIntent().getStringExtra("email");
+        Log.d("EMAIL",email);
+
         spinner = findViewById(R.id.spinner);
 
+        ref = FirebaseDatabase.getInstance().getReference().child("EmailMap");
+
+        ref.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for(DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    if(snapshot.child("email").getValue(String.class).equals(FirebaseAuth.getInstance().getCurrentUser().getEmail())){
+                     genTicket = snapshot.getKey().toString();
+                     break;
+                    }
+                }
+                myMeth2();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+
+    }
+
+    void myMeth2() {
         final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, android.R.id.text1);
         arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(arrayAdapter);
 
-        ref = FirebaseDatabase.getInstance().getReference().child("sih").child("5285");
+        Log.d("Generated: ", " "+genTicket);
+
+        ref = FirebaseDatabase.getInstance().getReference().child("sih").child(genTicket);
         ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -81,7 +113,7 @@ public class TrackActivity extends AppCompatActivity {
         recyclerView.setHasFixedSize(true);
         recyclerView.setAdapter(adapter);
 
-        ref = FirebaseDatabase.getInstance().getReference().child("sih").child("5285").child(String.valueOf(spinner.getSelectedItemPosition())).child("Status");
+        ref = FirebaseDatabase.getInstance().getReference().child("sih").child(genTicket).child(String.valueOf(spinner.getSelectedItemPosition())).child("Status");
         ref.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
