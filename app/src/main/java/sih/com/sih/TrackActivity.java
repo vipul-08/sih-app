@@ -39,7 +39,7 @@ public class TrackActivity extends AppCompatActivity {
 
         recyclerView.setAdapter(adapter);
 
-        ref = FirebaseDatabase.getInstance().getReference().child("Status");
+        ref = FirebaseDatabase.getInstance().getReference().child("sih").child("14101").child("0").child("Status");
         ref.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
@@ -89,7 +89,5 @@ public class TrackActivity extends AppCompatActivity {
 
             }
         });
-
-
     }
 }
